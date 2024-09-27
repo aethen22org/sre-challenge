@@ -36,7 +36,7 @@ k8s:
       # limits:
       #   cpu:
       #   memory:
-    # Decide if we want probes or not, mostly for testing or debugging purposes
+    # Decide if we want probes or not, mostly for testing or debugging purposes, should always be enabled
     enableProbes: true 
     startupProbe:
       initialDelaySeconds: 20
