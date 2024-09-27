@@ -32,6 +32,6 @@ push:
 build-chart:
 	$(MAKE) build
 	@cd /opt/base
-	yq -i ".name= $(IMAGE_NAME)" .\Chart.yaml
+	yq -i ".name= $(IMAGE_NAME)" ./Chart.yaml
 	helm package . --version ${GIT_TAG}
 	ls
