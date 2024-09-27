@@ -12,7 +12,7 @@ unit-tests:
 
 build:
 	@echo "Building image"
-	@docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA}
+	@docker build . -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA}
 	@echo "Built image"
 ifdef GIT_TAG
 	@docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA} ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest
