@@ -109,7 +109,7 @@ base:
       enabled: true
       name: https
       type: LoadBalancer
-      externalPort: 443
+      externalPort: 3000 # should be 443 behind ingress with certificates, but Minikbue doesnt let you expose any port below 1024 in Windows
       internalPort: 3000
       protocol: TCP # TCP, UDP or SCTP if your K8s allows it
       # extraPorts: # The application has no metrics, so this is disabled, but it should be enabled as we want observability
