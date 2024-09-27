@@ -11,8 +11,11 @@ unit-tests:
 	@echo "Test target has been called, but as there are no tests, nothing was done"
 
 build:
+	@echo "Pulling original image"
+	@docker pull -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest
+	@echo "Pulled image"
 	@echo "Building image"
-	@docker build . -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA}
+	@docker build . --cache-from ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA}
 	@echo "Built image"
 ifdef GIT_TAG
 	@docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA} ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest
