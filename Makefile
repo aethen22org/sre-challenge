@@ -12,10 +12,10 @@ unit-tests:
 
 build:
 	@echo "Pulling original image"
-#	@docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest --cache-from ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest 
+	@docker pull ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest
 	@echo "Pulled image"
 	@echo "Building image"
-	@docker build . --build-arg BUILDKIT_INLINE_CACHE=1 -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA} ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest
+	@docker build . --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA}
 	@echo "Built image"
 ifdef GIT_TAG
 	@docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA} ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest
