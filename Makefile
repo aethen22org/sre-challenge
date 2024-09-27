@@ -31,4 +31,4 @@ push:
 
 build-chart:
 	$(MAKE) build
-	cd ops/charts/sre-challenge && helm package . --version ${GIT_TAG} && curl --data-binary "@base-${GIT_TAG}.tgz" http://helm-registry.helm-registry.svc.cluster.local:8080/api/charts
+	cd ops/charts/sre-challenge && helm dependency update && helm package . --version ${GIT_TAG} && curl --data-binary "@base-${GIT_TAG}.tgz" http://helm-registry.helm-registry.svc.cluster.local:8080/api/charts
