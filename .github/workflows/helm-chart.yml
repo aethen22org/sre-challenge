@@ -20,13 +20,17 @@ jobs:
     # We run on our arc runners
     runs-on: arc-runner-set
     steps:
-      - uses: actions/checkout@master
-        with:
-          name: aethen22org/infra
-          ref: chart-base/v1.0.3
+      - uses: actions/checkout@v4
+      - name: Split tag name
+        env:
+          TAG: ${{ github.ref_name }}
+        id: split
+        run: echo "::set-output name=version::${TAG##*/}"
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       # Run tests
       - name: build chart
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          export GIT_TAG=${{ steps.split.outputs.version }}
           make build-chart

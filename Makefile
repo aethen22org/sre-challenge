@@ -30,9 +30,10 @@ push:
 	@echo "Pushed image"
 
 build-chart:
-	@echo "showing current folder"
-	@ls
-	@echo "showing parent folder"
-	@ls ..
-	@echo "showing infra folder?"
-	@ls ../Infra
+	$(MAKE) build \
+			GIT_TAG=${GIT_TAG}
+	@cd /opt/base
+	@echo "${GIT_TAG}"
+	yq -i ".name= $(IMAGE_NAME)" .\Chart.yam
+	helm package . --version ${GIT_TAG}
+	ls
