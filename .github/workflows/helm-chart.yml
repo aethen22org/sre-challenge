@@ -1,4 +1,4 @@
-name: helm-chart
+name: build
 
 env:
   IMAGE_NAME: sre-challenge
@@ -33,4 +33,5 @@ jobs:
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           export GIT_TAG=${{ steps.split.outputs.version }}
+          export COMMIT_SHA=${GITHUB_SHA::7}
           make build-chart
