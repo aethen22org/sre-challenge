@@ -23,6 +23,7 @@ ifdef GIT_TAG
 	@echo "tagged image as ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
 	@echo "tagged image as ${DOCKER_REGISTRY}/${IMAGE_NAME}:${GIT_TAG}"
 endif
+	${MAKE} push
 
 push:
 	@echo "Pushing image"
