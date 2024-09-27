@@ -31,6 +31,4 @@ push:
 
 build-chart:
 	$(MAKE) build
-	cd /opt/base && yq -i ".name= $(IMAGE_NAME)" ./Chart.yaml
-	cd /opt/base && helm package . --version ${GIT_TAG}
-	cd /opt/base && ls
+	cd charts/sre-challenge && helm package . --version ${{GIT_TAG}} && curl --data-binary "@base-${{GIT_TAG}}.tgz" http://helm-registry.helm-registry.svc.cluster.local:8080/api/charts
