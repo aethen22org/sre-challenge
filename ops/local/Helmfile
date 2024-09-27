@@ -10,6 +10,6 @@ releases:
   - name: sre-challenge
     namespace: sre-challenge
     chart: local-repository/sre-challenge
-    version: v0.0.5
+    version: v0.0.6
     values:
       - values.yaml

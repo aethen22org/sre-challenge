@@ -6,7 +6,7 @@ base:
 
   k8s:
     # If set to enabled, will create the namespacefrom chart instead of helm --create-namespace
-    createNamespace: true
+    createNamespace: false
     # extraAnnotations: {}
     # If Namespace is not set, wil use chart name
     namespace: "sre-challenge"
@@ -83,7 +83,7 @@ base:
           valueFrom:
             secretKeyRef:
               name: sre-challenge-redis
-              key: redis-pass
+              key: redis-password
     hpa:
       # Enabled by default
       enabled: true
