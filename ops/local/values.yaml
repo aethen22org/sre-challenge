@@ -76,7 +76,7 @@ base:
         - name: REDIS_HOST
           value: sre-challenge-redis-master.sre-challenge.svc.cluster.local
         - name: REDIS_PORT
-          value: 6379
+          value: "6379"
         - name: REDIS_USERNAME
           value: redis
         - name: REDIS_PASSWORD
