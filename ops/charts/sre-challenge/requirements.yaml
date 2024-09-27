@@ -1,4 +1,4 @@
 dependencies:
   - name: base
-    version:  "v1.0.3"
+    version:  "v1.0.4"
     repository: http://helm-registry.helm-registry.svc.cluster.local:8080/
