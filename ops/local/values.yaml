@@ -22,7 +22,7 @@ base:
         # Registry to pull from
         registry: localhost:5000
         # Tag to use
-        tag: sre-challenge:v0.0.2
+        tag: sre-challenge:v0.0.7
         # ImagePullPolicy
         pullPolicy: IfNotPresent
       # Default command and args are empty
