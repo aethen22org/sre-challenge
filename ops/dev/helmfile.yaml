@@ -1,10 +1,15 @@
 repositories:
- - name: helm-repository
-   url: http://helm-registry.helm-registry.svc.cluster.local:8080/
+  - name: helm-repository
+    url: http://helm-registry.helm-registry.svc.cluster.local:8080
 releases:
-- name: sre-challenge
-  namespace: sre-challenge
-  chart: helm-repository/sre-challenge
-  version: v0.0.3
-  values:
-    - values.yaml
+  - name: sre-challenge-redis
+    namespace: sre-challenge
+    chart: oci://registry-1.docker.io/bitnamicharts/redis
+    values:
+      - values.yaml
+  - name: sre-challenge
+    namespace: sre-challenge
+    chart: helm-repository/sre-challenge
+    version: v0.0.5
+    values:
+      - values.yaml
