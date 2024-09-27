@@ -28,3 +28,11 @@ push:
 	@echo "Pushing image"
 	@docker push ${DOCKER_REGISTRY}/${IMAGE_NAME} -a
 	@echo "Pushed image"
+
+build-chart:
+	@echo "showing current folder"
+	@ls
+	@echo "showing parent folder"
+	@ls ..
+	@echo "showing infra folder?"
+	@ls ../Infra
