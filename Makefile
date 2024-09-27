@@ -30,10 +30,10 @@ push:
 	@echo "Pushed image"
 
 build-chart:
+	@echo "${GIT_TAG}"
 	$(MAKE) build \
 			GIT_TAG=${GIT_TAG}
 	@cd /opt/base
-	@echo "${GIT_TAG}"
 	yq -i ".name= $(IMAGE_NAME)" .\Chart.yam
 	helm package . --version ${GIT_TAG}
 	ls
