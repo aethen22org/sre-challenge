@@ -1,4 +1,4 @@
-name: build
+name: helm-chart
 
 env:
   IMAGE_NAME: sre-challenge
