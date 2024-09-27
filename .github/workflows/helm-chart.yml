@@ -39,6 +39,7 @@ jobs:
           make build-chart
   # This job should not exist, this should be deployed by a GitOps tool, and from another repository
   install-chart:
+    needs: build-chart
     runs-on: arc-runner-set
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
