@@ -31,5 +31,5 @@ push:
 
 build-chart:
 	$(MAKE) build
-	@echo "Creating and pushing helm chart IMAGE_NAME-${GIT_TAG}"
+	@echo "Creating and pushing helm chart ${IMAGE_NAME}-${GIT_TAG}"
 	cd ops/charts/sre-challenge && helm dependency update && helm package . --version ${GIT_TAG} && curl --data-binary "@${IMAGE_NAME}-${GIT_TAG}.tgz" http://helm-registry.helm-registry.svc.cluster.local:8080/api/charts
