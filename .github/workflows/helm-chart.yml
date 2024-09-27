@@ -15,11 +15,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  # We only have a build-chart job
+  # We have two jobs, one packages and pushes our helm chart, based on the one on Infra/charts/base
   build-chart:
     # We run on our arc runners
     runs-on: arc-runner-set
     steps:
+      # Get version from tag name
       - uses: actions/checkout@v4
       - name: Split tag name
         env:
@@ -28,10 +29,24 @@ jobs:
         run: echo "::set-output name=version::${TAG##*/}"
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      # Run tests
+      # Activate brew envs to use helm, setup variables and run make build-chart, which
+      # builds the docker image, pushes it, creates a helm chart and pushes it
       - name: build chart
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           export GIT_TAG=${{ steps.split.outputs.version }}
           export COMMIT_SHA=${GITHUB_SHA::7}
           make build-chart
+  # This job should not exist, this should be deployed by a GitOps tool, and from another repository
+  install-chart:
+    runs-on: arc-runner-set
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      # Install the chart on "dev", deploying it with the options set in values.yaml
+      - name: deploy-dev
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          cd ops/dev
+          yes | helmfile init
+          yes | helmfile apply

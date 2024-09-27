@@ -1,0 +1,10 @@
+repositories:
+ - name: local-repository
+   url: http://localhost:8000/
+releases:
+- name: sre-challenge
+  namespace: sre-challenge
+  chart: local-repository/sre-challenge
+  version: v1.0.0
+  values:
+    - values.yaml
