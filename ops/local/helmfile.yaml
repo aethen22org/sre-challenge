@@ -1,6 +1,6 @@
 repositories:
   - name: local-repository
-   url: http://localhost:8000/
+    url: http://localhost:8000/
 releases:
   - name: sre-challenge-redis
     namespace: sre-challenge
