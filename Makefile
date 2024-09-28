@@ -1,8 +1,9 @@
 # Usage
 # make help 			# returns the list of targets
 # make unit-tests		# runs unit-tests, does nothing here as they do not exist, but it should create a coverage file and send it to code-scanners
-# make build			# builds the image and tags it with the commit sha if no tag was pushed, if a tag was pushed, tag it as latest and the tag too
+# make build			# builds the image and tags it with the commit sha if no tag was pushed, if a tag was pushed, tag it the tag
 # make push				# push all tags of the image relevant to this repository
+# make build-chart		# runs build target, push target and packages the helm chart and pushes it
 
 help:
 	@grep '^[^#[:space:]].+:' Makefile
