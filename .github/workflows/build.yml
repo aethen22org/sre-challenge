@@ -23,7 +23,7 @@ jobs:
     # We run on our arc runners
     runs-on: arc-runner-set
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v4
       # Run tests
       - name: tests

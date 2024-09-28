@@ -1,12 +1,13 @@
 name: helm-chart
 
+# We use image name and docker registry as variables in case they change
 env:
   IMAGE_NAME: sre-challenge
   DOCKER_REGISTRY: docker-registry.docker-registry.svc.cluster.local
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push events only when done on certain tags
+  # Triggers the workflow on push events only when done on certain tags(That starts with v)
   push:
     tags:
       - 'v**'
@@ -15,7 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # We have two jobs, one packages and pushes our helm chart, based on the one on Infra/charts/base
+  # We have two jobs, one packages and pushes our helm chart, based on the one on Infra/charts/base, and one that applies the helmfile, deploying the artifact
   build-chart:
     # We run on our arc runners
     runs-on: arc-runner-set
@@ -27,7 +28,7 @@ jobs:
           TAG: ${{ github.ref_name }}
         id: split
         run: echo "::set-output name=version::${TAG##*/}"
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v4
       # Activate brew envs to use helm, setup variables and run make build-chart, which
       # builds the docker image, pushes it, creates a helm chart and pushes it
@@ -42,7 +43,7 @@ jobs:
     needs: build-chart
     runs-on: arc-runner-set
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v4
       # Install the chart on "dev", deploying it with the options set in values.yaml
       - name: deploy-dev
