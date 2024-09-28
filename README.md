@@ -84,6 +84,6 @@ The rest of the values are documented on the same file, if something is not clea
 
 ## Locally deploy
 
-To locally deploy the application, apply the helmfile in ops/local, it should not work right now, as it is pointing to a local helm repository, but if our helm chart was deployed at a chart museum in the cloud or somewhere we could access(via RBAC or whichever), it would deploy our helm chart in our cluster.
+To locally deploy the application, apply the helmfile in ops/local, it should not work right now, as it is pointing to a local helm repository, but if our helm chart was deployed at a chart museum in the cloud or somewhere we could access(via RBAC or whichever), and we configured it in the helmfile repository url, it would deploy our helm chart in our cluster.
 
 If the secret sre-challenge-redis is not created on the same namespace as the application, you will need to create it and reapply the helmfile.
