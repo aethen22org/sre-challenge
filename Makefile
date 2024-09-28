@@ -23,8 +23,8 @@ ifdef GIT_TAG
 	@docker tag ${DOCKER_REGISTRY}/${IMAGE_NAME}:${COMMIT_SHA} ${DOCKER_REGISTRY}/${IMAGE_NAME}:${GIT_TAG}
 	@echo "tagged image as ${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
 	@echo "tagged image as ${DOCKER_REGISTRY}/${IMAGE_NAME}:${GIT_TAG}"
-endif
 	${MAKE} push
+endif
 
 push:
 	@echo "Pushing image"
