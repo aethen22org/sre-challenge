@@ -1,0 +1,143 @@
+base:
+  # Default values
+
+  nameOverride: "sre-challenge"
+  environment: prod
+
+  k8s:
+    # If set to enabled, will create the namespacefrom chart instead of helm --create-namespace
+    createNamespace: false
+    # extraAnnotations: {}
+    # If Namespace is not set, wil use chart name
+    namespace: "sre-challenge"
+    deployment:
+      # Either Deployment or StatefulSet
+      kind: Deployment
+        # In case of StatefulSet, set podManagementPolicy
+        # podManagementPolicy: ""
+      # Enabled by default
+      enabled: true
+      # Image to use
+      image: 
+        # Registry to pull from
+        registry: localhost:5000
+        # Tag to use
+        tag: sre-challenge:v0.0.7
+        # ImagePullPolicy
+        pullPolicy: IfNotPresent
+      # Default command and args are empty
+      # command:
+      # args:
+      replicaCount: 1
+      # Requests and limits:
+      resources:
+        requests:
+          cpu: 200m
+          memory: 350Mi
+        # limits:
+        #   cpu:
+        #   memory:
+      # Decide if we want probes or not, mostly for testing or debugging purposes
+      enableProbes: true 
+      startupProbe:
+        initialDelaySeconds: 20
+        periodSeconds: 5
+        timeoutSeconds: 3
+        failureThreshold: 5
+        successThreshold: 1
+        httpGet:
+          path: /api/health
+          port: 3000
+      readinessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+        timeoutSeconds: 3
+        failureThreshold: 5
+        successThreshold: 1
+        httpGet:
+          path: /api/health
+          port: 3000
+      livenessProbe:
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 3
+        failureThreshold: 3
+        successThreshold: 1
+        httpGet:
+          path: /api/health
+          port: 3000
+      # Deployment strategy configuration
+      strategy:
+        type: RollingUpdate
+        maxSurge: "25%"
+        maxUnavailable: "25%"
+      environment:
+        extraVars: 
+        - name: REDIS_HOST
+          value: sre-challenge-redis-master.sre-challenge.svc.cluster.local
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sre-challenge-redis
+              key: redis-password
+    hpa:
+      # Enabled by default
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 90
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        selectPolicy: Max # Min, Max or Disabled
+        policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+      scaleUp:
+        stabilizationWindowSeconds: 0
+        selectPolicy: Max # Min, Max or Disabled
+        policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+    service:
+      # Enabled by default
+      enabled: true
+      name: https
+      type: LoadBalancer
+      externalPort: 3000 # should be 443 behind ingress with certificates, but Minikbue doesnt let you expose any port below 1024 in Windows
+      internalPort: 3000
+      protocol: TCP # TCP, UDP or SCTP if your K8s allows it
+      extraPorts: # The application has no metrics, so this is disabled, but it should be enabled as we want observability
+        - name: prometheus
+          externalPort: 9091
+          internalPort: 9091
+          protocol: TCP
+    monitoring:
+      serviceMonitor:
+        # The application has no metrics, so this is disabled, but it should be enabled as we want observability
+        enabled: true
+        endpoints:
+          - path: /api/metrics
+          port: prometheus
+          interval: "30s"
+          scrapeTimeout: "5s"
+    ingress:
+      # Disabled by default, it should be enabled on environments and configured
+      enabled: true
+      ingressClassName: nginx
+      tls:
+      - hosts: sre-challenge.prod.mydomain.com
+        secretName: cert-secret # Should have a cert and key, but it does not work on minikube
+      rules:
+      - host: sre-challenge.prod.mydomain.com
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: sre-challenge
+              port:
+                number: 3000
