@@ -1,5 +1,6 @@
 name: build
 
+# We use image name and docker registry as variables
 env:
   IMAGE_NAME: sre-challenge
   DOCKER_REGISTRY: docker-registry.docker-registry.svc.cluster.local
@@ -28,12 +29,12 @@ jobs:
       - name: tests
         run: |
           make unit-tests
-      # Build the image and see that it builds
+      # Build the image
       - name: build
         run: |
           export COMMIT_SHA=${GITHUB_SHA::7}
           make build
-      # Step 3: Build the Docker image with cache and push it
+      # Push the image
       - name: push
         run: |
           export COMMIT_SHA=${GITHUB_SHA::7}
